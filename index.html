@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jay Chou Music Player</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <!-- Signature Watermark -->
+    <div class="signature-watermark">Jay Chou</div>
+
+    <div class="main-container">
+        <!-- Left Side: Player Controls -->
+        <div class="player-section">
+            <div class="player-header">
+                <div class="now-playing">正在播放</div>
+            </div>
+
+            <div class="vinyl-wrapper">
+                <!-- Tonearm Structure -->
+                <div class="tonearm">
+                    <div class="tonearm-base"></div>
+                    <div class="tonearm-arm"></div>
+                    <div class="tonearm-head"></div>
+                </div>
+
+                <div class="img-container">
+                    <img src="imgs/1.png" alt="Album Art" id="cover">
+                </div>
+            </div>
+
+            <h2 id="title">歌名</h2>
+            <h3 id="artist">周杰伦</h3>
+
+            <audio id="audio" src=""></audio>
+
+            <div class="progress-container" id="progress-container">
+                <div class="progress" id="progress"></div>
+                <div class="progress-handle"></div>
+                <div class="duration-wrapper">
+                    <span id="current-time">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="prev" class="action-btn">
+                    <i class="fas fa-step-backward"></i>
+                </button>
+                <button id="play" class="action-btn action-btn-big">
+                    <div class="play-btn-inner">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </button>
+                <button id="next" class="action-btn">
+                    <i class="fas fa-step-forward"></i>
+                </button>
+            </div>
+            
+            <button id="playlist-btn" class="playlist-toggle">
+                <i class="fas fa-list-ul"></i> 播放列表
+            </button>
+        </div>
+
+        <!-- Right Side: Lyrics -->
+        <div class="lyrics-section">
+            <div class="lyrics-header">
+                <span>歌词</span>
+            </div>
+            <div class="lyrics-container" id="lyrics-container">
+                <div class="lyrics-box" id="lyrics-box">
+                    <p class="lyric-line">歌词准备中...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="playlist-container" id="playlist-container">
+        <div class="playlist-header">
+            <h3>播放列表</h3>
+            <button id="close-playlist"><i class="fas fa-times"></i></button>
+        </div>
+        <ul id="playlist-items">
+            <!-- Javascript will populate this -->
+        </ul>
+    </div>
+
+    <!-- Load lyrics data first -->
+    <script src="lyrics_data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
