@@ -1,5 +1,7 @@
 # 🎵 Jay Chou Music Player (周杰伦专属音乐播放器)
 
+![项目预览](preview.png)
+
 这是一个基于 HTML5, CSS3 和原生 JavaScript 打造的高颜值、响应式 Web 音乐播放器。项目以“磨砂玻璃”与“黑胶唱片”为核心设计语言，致敬华语乐坛天王周杰伦。
 
 ## ✨ 项目亮点
