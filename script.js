@@ -187,7 +187,7 @@ const songs = [
     "黑色毛衣",
     "龙卷风",
     "龙战骑士",
-    "你我的ok绷"
+    "你是我的ok绷"
 ];
 
 // Images available
@@ -242,28 +242,41 @@ function loadSong(song) {
 
 // Parse LRC Format
 function parseLyrics(text) {
-    const lines = text.split('\n');
+    // Split by newline or literal \n string to be robust
+    const lines = text.split(/\\n|\n/);
     const lyrics = [];
     
-    // Regex to match time format [mm:ss.xx]
-    const timeRegex = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/;
-
     lines.forEach(line => {
-        const match = line.match(timeRegex);
-        if (match) {
-            const minutes = parseInt(match[1]);
-            const seconds = parseInt(match[2]);
-            const milliseconds = parseInt(match[3]);
-            
-            // Convert to seconds
-            const time = minutes * 60 + seconds + milliseconds / 1000;
+        // Find all timestamps in the line
+        const timeRegex = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/g;
+        const matches = [...line.matchAll(timeRegex)];
+        
+        if (matches.length > 0) {
+            // Clean content: remove all timestamps
             const content = line.replace(timeRegex, '').trim();
             
             if (content) {
-                lyrics.push({ time, content });
+                matches.forEach(match => {
+                    const minutes = parseInt(match[1]);
+                    const seconds = parseInt(match[2]);
+                    
+                    // Handle milliseconds (2 or 3 digits)
+                    let milliseconds = parseFloat(match[3]);
+                    if (match[3].length === 2) {
+                        milliseconds = milliseconds / 100;
+                    } else {
+                        milliseconds = milliseconds / 1000;
+                    }
+                    
+                    const time = minutes * 60 + seconds + milliseconds;
+                    lyrics.push({ time, content });
+                });
             }
         }
     });
+
+    // Sort lyrics by time because multiple timestamps might scramble order
+    lyrics.sort((a, b) => a.time - b.time);
 
     currentLyrics = lyrics;
     renderLyricsDOM();
