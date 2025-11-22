@@ -15,57 +15,179 @@ const playlistBtn = document.getElementById('playlist-btn');
 const closePlaylistBtn = document.getElementById('close-playlist');
 const playlistContainer = document.getElementById('playlist-container');
 const playlistItems = document.getElementById('playlist-items');
+const searchInput = document.getElementById('search-input');
 
 const lyricsBox = document.getElementById('lyrics-box');
 const lyricsContainer = document.getElementById('lyrics-container');
 
 // Song titles
 const songs = [
+    "Mine Mine",
+    "Vani有约会",
+    "一路上有你",
+    "一路向北",
     "七里香",
+    "三年二班",
+    "上海一九四三",
     "不能说的秘密",
     "不该",
+    "世界未末日",
+    "世界末日",
     "东风破",
+    "乌克丽丽",
+    "乔克叔叔",
+    "乱舞春秋",
+    "二手烟",
     "以父之名",
+    "伊斯坦堡",
     "你听得到",
+    "你好吗",
+    "你怎么连话都说不清楚",
+    "你比从前快乐",
+    "倒带",
     "借口",
+    "傻笑",
+    "免费教学录影带",
+    "公主病",
+    "公公偏头痛",
     "兰亭序",
+    "最后的战役",
     "最长的电影",
+    "刀马旦",
+    "分裂",
+    "千山万水",
     "千里之外",
+    "半兽人",
     "半岛铁盒",
+    "印第安老斑鸠",
+    "双刀",
     "反方向的钟",
     "发如雪",
     "可爱女人",
+    "同一种调调",
     "听妈妈的话",
     "告白气球",
+    "周大侠",
+    "哪里都是你",
+    "嘻哈空姐",
+    "四季列车",
+    "四面楚歌",
+    "回到过去",
+    "园游会",
+    "困兽之斗",
+    "城里的月光",
+    "外婆",
+    "多谢了",
     "夜曲",
+    "夜的第七章",
+    "大头贴",
+    "大笨钟",
+    "天地一斗",
+    "太委屈",
+    "她的睫毛",
+    "好久不见",
+    "威廉古堡",
+    "娘子",
     "安静",
+    "完美主义",
+    "对不起(统一茶饮料广告曲)",
+    "将军",
+    "屋顶",
+    "开不了口",
+    "彩虹",
+    "心雨",
+    "惊叹号",
+    "懦夫",
+    "我不配",
+    "我愿意",
     "我是如此相信",
+    "我的伦理",
+    "我的地盘",
     "我落泪情绪零碎",
     "手写的从前",
+    "手语",
+    "扯",
+    "找自己",
+    "抱一抱",
     "搁浅",
+    "斗牛",
+    "断了的弦",
+    "新不了情",
+    "无双",
+    "时光机",
     "明明就",
     "星晴",
     "晴天",
     "暗号",
+    "月光",
     "枫",
+    "梦想启动",
+    "梯田",
+    "止战之殇",
+    "比较大的大提琴",
+    "水手怕水",
+    "流浪诗人",
+    "浪漫手机",
+    "淘汰",
+    "漂移",
+    "火车叨位去",
     "烟花易冷",
     "爱你没差",
     "爱在西元前",
+    "爱情悬崖",
+    "爱我别走",
+    "爱的飞行日记",
+    "爷爷泡的茶",
+    "爸,我回来了",
+    "牛仔很忙",
+    "献世",
     "珊瑚海",
+    "琴伤",
+    "瓦解",
+    "甜甜的",
+    "画沙",
+    "疗伤烧肉粽",
+    "白色风车",
+    "皮影戏",
+    "祝我生日快乐",
+    "秘密花园",
     "稻香",
     "等你下课",
     "简单爱",
+    "米兰的小铁匠",
     "红尘客栈",
+    "红模仿",
     "给我一首歌的时间",
+    "自导自演",
     "花海",
+    "菊花台",
     "蒲公英的约定",
+    "蓝色风暴",
+    "蛇舞",
+    "蜗牛",
     "说了再见",
     "说好的幸福呢",
+    "豆花台",
+    "超人不会飞",
+    "超跑女神",
+    "跨时代",
     "轨迹",
+    "迷迭香",
+    "迷魂曲",
     "退后",
+    "逆鳞",
+    "阳光宅男",
+    "雨下一整晚",
     "青花瓷",
+    "魔术先生",
+    "麦烝玮",
+    "麦芽糖",
+    "黄金甲EP",
+    "黑色幽默",
     "黑色毛衣",
-    "龙卷风"
+    "龙卷风",
+    "龙战骑士",
+    "你我的ok绷"
 ];
 
 // Images available
@@ -84,7 +206,13 @@ renderPlaylist();
 // Update song details
 function loadSong(song) {
     title.innerText = song;
-    audio.src = `music/周杰伦-${song}.mp3`;
+    
+    let srcPath = `music/周杰伦-${song}.mp3`;
+    if(song === "你我的ok绷") {
+       srcPath = `music/周杰伦${song}.mp3`;
+    }
+
+    audio.src = srcPath;
     
     const imgIndex = (songIndex % totalImages) + 1;
     cover.src = `imgs/${imgIndex}.png`;
@@ -337,6 +465,21 @@ function updateActivePlaylistItem() {
     });
 }
 
+// Filter Playlist
+searchInput.addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase();
+    const items = playlistItems.querySelectorAll('li');
+    
+    items.forEach(item => {
+        const title = item.querySelector('.song-title').innerText.toLowerCase();
+        if(title.indexOf(term) > -1) {
+            item.classList.remove('hidden');
+        } else {
+            item.classList.add('hidden');
+        }
+    });
+});
+
 // Event listeners
 playBtn.addEventListener('click', () => {
     // Check main container for play state as it's the top level wrapper
@@ -365,6 +508,8 @@ audio.addEventListener('ended', nextSong);
 // Playlist toggles
 playlistBtn.addEventListener('click', () => {
     playlistContainer.classList.add('show');
+    // Auto focus search when playlist opens
+    setTimeout(() => searchInput.focus(), 300);
 });
 
 closePlaylistBtn.addEventListener('click', () => {

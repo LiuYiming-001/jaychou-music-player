@@ -562,7 +562,7 @@ h3 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reduced margin to fit search */
     padding: 0 10px;
     border-bottom: 1px solid rgba(255,255,255,0.1);
     padding-bottom: 15px;
@@ -589,6 +589,45 @@ h3 {
     transform: rotate(90deg);
 }
 
+/* Search Bar */
+.search-container {
+    position: relative;
+    margin-bottom: 20px;
+    padding: 0 5px;
+}
+
+.search-container i {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 14px;
+}
+
+#search-input {
+    width: 100%;
+    padding: 12px 15px 12px 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    color: #fff;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s;
+}
+
+#search-input:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 15px rgba(255, 126, 179, 0.2);
+}
+
+#search-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
 #playlist-items {
     list-style: none;
     overflow-y: auto;
@@ -606,6 +645,10 @@ h3 {
     font-size: 14px;
     color: rgba(255,255,255,0.7);
     margin-bottom: 5px;
+}
+
+#playlist-items li.hidden {
+    display: none !important;
 }
 
 #playlist-items li img {
@@ -737,17 +780,6 @@ h3 {
     .img-container {
         width: 160px;
         height: 160px;
-    }
-    
-    .vinyl-wrapper {
-        width: 200px;
-        height: 180px;
-    }
-
-    .tonearm {
-        right: -20px;
-        top: -15px;
-        transform: scale(0.8) rotate(-35deg);
     }
     
     .signature-watermark {
