@@ -16,6 +16,8 @@ const closePlaylistBtn = document.getElementById('close-playlist');
 const playlistContainer = document.getElementById('playlist-container');
 const playlistItems = document.getElementById('playlist-items');
 const searchInput = document.getElementById('search-input');
+const playModeBtn = document.getElementById('play-mode');
+const likeBtn = document.getElementById('like-btn');
 
 const lyricsBox = document.getElementById('lyrics-box');
 const lyricsContainer = document.getElementById('lyrics-container');
@@ -199,6 +201,9 @@ let songIndex = 0;
 // Lyrics Array
 let currentLyrics = [];
 
+// Playback Mode
+let playMode = 'sequence'; // sequence, shuffle, loop
+
 // Initially load song info DOM
 loadSong(songs[songIndex]);
 renderPlaylist();
@@ -336,10 +341,17 @@ function prevSong() {
 
 // Next song
 function nextSong() {
-    songIndex++;
-
-    if (songIndex > songs.length - 1) {
-        songIndex = 0;
+    if (playMode === 'shuffle') {
+        let newIndex;
+        do {
+            newIndex = Math.floor(Math.random() * songs.length);
+        } while (newIndex === songIndex && songs.length > 1);
+        songIndex = newIndex;
+    } else {
+        songIndex++;
+        if (songIndex > songs.length - 1) {
+            songIndex = 0;
+        }
     }
 
     loadSong(songs[songIndex]);
@@ -516,7 +528,51 @@ audio.addEventListener('timeupdate', updateProgress);
 progressContainer.addEventListener('click', setProgress);
 
 // Song ends
-audio.addEventListener('ended', nextSong);
+audio.addEventListener('ended', () => {
+    if (playMode === 'loop') {
+        audio.currentTime = 0;
+        playSong();
+    } else {
+        nextSong();
+    }
+});
+
+// Play Mode Toggle
+playModeBtn.addEventListener('click', () => {
+    const icon = playModeBtn.querySelector('i');
+    if (playMode === 'sequence') {
+        playMode = 'shuffle';
+        icon.classList.remove('fa-retweet');
+        icon.classList.add('fa-random');
+        playModeBtn.title = '随机播放';
+    } else if (playMode === 'shuffle') {
+        playMode = 'loop';
+        icon.classList.remove('fa-random');
+        icon.classList.add('fa-redo');
+        playModeBtn.title = '单曲循环';
+    } else {
+        playMode = 'sequence';
+        icon.classList.remove('fa-redo');
+        icon.classList.add('fa-retweet');
+        playModeBtn.title = '顺序播放';
+    }
+});
+
+// Like Button Toggle
+if (likeBtn) {
+    likeBtn.addEventListener('click', () => {
+        const icon = likeBtn.querySelector('i');
+        if (icon.classList.contains('far')) {
+            icon.classList.remove('far');
+            icon.classList.add('fas');
+            icon.style.color = '#ff7eb3'; // Active color
+        } else {
+            icon.classList.remove('fas');
+            icon.classList.add('far');
+            icon.style.color = ''; // Reset color
+        }
+    });
+}
 
 // Playlist toggles
 playlistBtn.addEventListener('click', () => {
